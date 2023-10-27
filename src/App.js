@@ -13,7 +13,6 @@ const hideCartHandler =() => {
 };
  
   return (
-  
  <CartProvider>
     {cartIsShown && <Cart onClose={hideCartHandler} />}
      <Header onShowCart = {showCartHandler}/>

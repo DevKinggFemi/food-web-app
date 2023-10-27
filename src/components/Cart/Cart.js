@@ -4,6 +4,8 @@ import { Fragment, useContext, useState } from "react";
 import CartContext from "../../store/CartContext";
 import CartItem from "./CartItem";
 import Checkout from "./checkout";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 const Cart = (props) => {
   const [isConfriming, setIsConfirming]= useState(false);
   const [didsubmit, setdidSubmit]= useState(false);
@@ -19,16 +21,11 @@ const Cart = (props) => {
    };
    const submitHandler= async (userData)=> {
     setIsConfirming(true);
- const response = await fetch ('https://food-app-89818-default-rtdb.firebaseio.com/meals.json', {
-      method : 'POST',
-      body:JSON.stringify({
-        user: userData,
-        orderedItems: cartCtx.items
-      })
-    } );
+ const docRef = await addDoc(collection(db, "order"), userData)
+ console.log("Document written with ID: ", docRef.id);
 setIsConfirming(false);
 setdidSubmit(true);
-cartCtx.clearCart()
+cartCtx.clearCart();
    };
 
    const cartItemAddHandler = item  => {
